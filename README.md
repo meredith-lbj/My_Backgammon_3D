@@ -1,2 +1,4 @@
 # My_Backgammon_3D
-Recreated the board game Backgammon in Unity 3D using C#
+Implémentation du jeu Backgammon avec Unity 3D et C#.
+
+Recreated the board game Backgammon in Unity 3D using C#.
