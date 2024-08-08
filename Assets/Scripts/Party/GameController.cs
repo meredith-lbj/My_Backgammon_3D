@@ -575,7 +575,7 @@ public class GameController : MonoBehaviour
         rb1.AddTorque(forceX, forceY, forceZ);
         rb2.AddTorque(forceX2, forceY2, forceZ2);
         
-        // AudioManager.instance.playSFXByName("dice_roll_2");
+        AudioManager.instance.playSFXByName("dice_roll_2");
     }
 
     public void ExitGame()
