@@ -97,10 +97,6 @@ public class BoardLayout : MonoBehaviour
         tileList = FindObjectsOfType<Tile>().ToList();
         tileList.Reverse();
 
-        // foreach (var tile in tileList) {
-        //     Debug.Log("NAME VALUE : " + tile.name + " INDEX VALUE : " + tile.index);
-        // }
-
         tileList[0].SpawnPiece(tileList[0], yellowPiecePrefab, Piece.ColorState.YELLOW, 5);
         tileList[0].AddPiece(5);
         tileList[4].SpawnPiece(tileList[4], redPiecePrefab, Piece.ColorState.RED, 3);

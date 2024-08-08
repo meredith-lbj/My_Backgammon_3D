@@ -136,14 +136,12 @@ public class GameController : MonoBehaviour
     public void CheckMoveIsPossible()
     {
         if (currentMoveDone == 0 || isGameOver) return;
-        Debug.Log("ALOOOOOOOOOOOO : " + currentMoveDone);
 
         CanMoveOut();
 
         var pieceList = FindObjectsOfType<Piece>().ToList();
 
         if (!CanMovePlayer()) {
-            Debug.Log("POURQUOI  ");
             noMovePossible.SetActive(true);
             yellowKickCounterText.enabled = false;
             redKickCounterText.enabled = false;
@@ -166,24 +164,19 @@ public class GameController : MonoBehaviour
     {
         var pieceList = FindObjectsOfType<Piece>().Where(piece => playerTurn == 1 ? piece.colorState == Piece.ColorState.YELLOW : piece.colorState == Piece.ColorState.RED).ToList();
         pieceList.RemoveAll(piece => piece.pieceState == Piece.PieceState.OUT);
-        Debug.Log("EEEEEEEEEEEEEEH OH");
 
         if (pieceList.Any(piece => piece.pieceState != Piece.PieceState.TILED)) return false;
-        Debug.Log("EEEEEEEEEEEEEEH OH 2");
 
         foreach (var piece in pieceList) {
             if (piece.colorState == Piece.ColorState.YELLOW && !yellowJanRange.Contains(piece.currentTile.index)) {
-                Debug.Log("EEEEEEEEEEEEEEH OH 3"+ piece.currentTile.index);
                 players[playerTurn - 1].canMoveOut = false;
                 return false;
             } else if (piece.colorState == Piece.ColorState.RED && !redJanRange.Contains(piece.currentTile.index)) {
-                Debug.Log("EEEEEEEEEEEEEEH OH 4 " + piece.currentTile.index);
                 players[playerTurn - 1].canMoveOut = false;
                 return false;
             }
         }
         players[playerTurn - 1].canMoveOut = true;
-        Debug.Log("EEEEEEEEEEEEEEH OH 5");
         return true;
     }
     public bool CanMovePlayer()
@@ -216,11 +209,9 @@ public class GameController : MonoBehaviour
             if (CanMovePiece(tileList, piece, dice1Value, position) ||
                 CanMovePiece(tileList, piece, nbPieceMove == 4 ? dice1Value * 2 : dice2Value, position) ||
                 CanMovePiece(tileList, piece, nbPieceMove == 4 ? dice1Value * 3 : dice1Value + dice2Value, position)) {
-                Debug.Log("TROP BIZARRRRRRE ");
                 return true;
             }
             if (nbPieceMove == 4 && CanMovePiece(tileList, piece, dice1Value * 4, position)) {
-                Debug.Log("TROP BIZARRRRRRE 2");
                 return true;
             }
         }
@@ -232,7 +223,6 @@ public class GameController : MonoBehaviour
         if (players[playerTurn - 1].canMoveOut) {
             var pieceList = FindObjectsOfType<Piece>().Where(piece => playerTurn == 1 ? piece.colorState == Piece.ColorState.YELLOW : piece.colorState == Piece.ColorState.RED).ToList();
             pieceList.RemoveAll(piece => piece.pieceState == Piece.PieceState.OUT);
-            Debug.Log("TROP BIZARRRRRRE 5");
             if (CanMoveInTile(tileList, pieceList)) return false;
 
             var playerColor = players[playerTurn - 1].colorState;
@@ -247,11 +237,9 @@ public class GameController : MonoBehaviour
             if (CanMoveOutPiece(piece, dice1Value, position) ||
                 CanMoveOutPiece(piece, nbPieceMove == 4 ? dice1Value * 2 : dice2Value, position) ||
                 CanMoveOutPiece(piece, nbPieceMove == 4 ? dice1Value * 3 : dice1Value + dice2Value, position)) {
-                Debug.Log("TROP BIZARRRRRRE 3");
                 return true;
             }
             if (nbPieceMove == 4 && CanMoveOutPiece(piece, dice1Value * 4, position)) {
-                Debug.Log("TROP BIZARRRRRRE 4");
                 return true;
             }
         }
@@ -265,17 +253,13 @@ public class GameController : MonoBehaviour
             var fanTileList = tileList.FindAll(tile => playerColor == Piece.ColorState.YELLOW ? yellowJanRange.Contains(tile.index) : redJanRange.Contains(tile.index));
             if (playerColor == Piece.ColorState.YELLOW) {
                 fanTileList = fanTileList.OrderBy(tile => tile.index).ToList();
-                fanTileList.ForEach(tile => Debug.Log("ICI LAAAAAAAAA YELLOW : " + tile.index));
             } else {
                 fanTileList = fanTileList.OrderByDescending(tile => tile.index).ToList();
-                fanTileList.ForEach(tile => Debug.Log("ICI LAAAAAAAAA RED : " + tile.index));
             }
 
             Tile tile = fanTileList.Find(tile => tile.GetCurrentPieceCount() > 0);
-            Debug.Log("TROP BIZARRRRRRE 4 : " + tile.index);
             if (piece.currentTile.index == tile.index) return true;
         }
-        Debug.Log("TROP BIZARRRRRRE 5");
         return false;
     }
 
@@ -292,20 +276,15 @@ public class GameController : MonoBehaviour
     {
         int targetPosition = piece.colorState == Piece.ColorState.YELLOW ? currentPosition + diceValue : currentPosition - diceValue;
         if (players[playerTurn - 1].canMoveOut) {
-            Debug.Log("MOVE OU PART LA ");
             if (targetPosition < 0 || targetPosition > nbTiles + 1 || diceValue == 0) return false;
-            Debug.Log("MOVE OU PART LA 1");
             if (targetPosition == 0 || targetPosition == nbTiles + 1) return true;
         } else {
-            Debug.Log("MOVE OU PART LA 2");
             if (targetPosition < 1 || targetPosition > nbTiles) return false;
         }
 
         Tile targetTile = tileList.Find(tile => tile.index == targetPosition);
-        Debug.Log("MOVE OU PART LA 4");
 
         if (targetTile.CanAddPiece(piece)) return true;
-        Debug.Log("MOVE OU PART LA 5");
         return false;
     }
 
@@ -363,10 +342,8 @@ public class GameController : MonoBehaviour
         var pieceList = FindObjectsOfType<Piece>().ToList();
 
         if (players[playerTurn - 1].canMoveOut == false && CanMoveOut() && CanMovePlayer()) {
-            Debug.Log("JE PEUX MOVE OUT ICI ");
             players[playerTurn - 1].canMoveOut = true;
         } else {
-            Debug.Log("DEFAULT MOVE FALSE OUT STATUS ");
             players[playerTurn - 1].canMoveOut = false;
         }
 
@@ -388,7 +365,6 @@ public class GameController : MonoBehaviour
             pieceList.ForEach(piece => piece.canSelect = false);
             rollDicesButton.SetActive(true);
             isNextTurn = false;
-            Debug.Log("C' EST AU TOUR DE PLAYER : " + playerTurn);
             return;
         }
 
@@ -436,12 +412,10 @@ public class GameController : MonoBehaviour
     {
         if (currentMoveDone == 0) return;
 
-        Debug.Log("JE CAPTE PAS CA : " + nbPieceMove);
         if (nbPieceMove == 4) {
             dice2Value = 0;
             currentMoveDone = distance % dice1Value == 0 ? currentMoveDone - distance / dice1Value : currentMoveDone - 1;
             ResetMove();
-            Debug.Log("JE PASSE LA AVEC 4 ET IL RESTE " + currentMoveDone + " DISTANCE DE " + distance);
             return;
         }
         if (distance == dice1Value) {
@@ -464,7 +438,6 @@ public class GameController : MonoBehaviour
             if (dice1Value == 0 && dice2Value == 0) currentMoveDone = 0;
         }
         ResetMove();
-        Debug.Log(" CURRENT MOVE LA : " + currentMoveDone + "DISTANCE : " + distance);
     }
 
     void ResetMove()
@@ -494,8 +467,6 @@ public class GameController : MonoBehaviour
         if (diceComponent.GetUpValue() != 0 && diceComponent2.GetUpValue() != 0) {
             dice1Value = diceComponent.GetUpValue();
             dice2Value = diceComponent2.GetUpValue();
-            Debug.Log("AAAAAAAAAAAAAAAAAAAH DICE VALUE " + diceComponent.GetUpValue());
-            Debug.Log("AAAAAAAAAAAAAAAAAAAH DICE 2 VALUE " + diceComponent2.GetUpValue());
             isDiceTurn = false;
             if (playerTurn == -1 && dice1Value == dice2Value) {
                 RollDices(new List<Vector3>() { startDicesPosition[0].position, startDicesPosition[1].position}, true);
@@ -508,7 +479,6 @@ public class GameController : MonoBehaviour
                 return;
             }
             nbPieceMove = CalculNbPieceMove();
-            Debug.Log("OH WOOOOW : " + nbPieceMove);
             currentMoveDone = nbPieceMove;
             if (canStartGame == false) canStartGame = true;
         }

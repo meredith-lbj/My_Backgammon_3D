@@ -82,14 +82,11 @@ public class Piece : MonoBehaviour
 
         if (colorState == ColorState.YELLOW) {
             var yellowOutZone = GameController.gameController.yellowOutZone.GetComponent<OutZone>();
-            Debug.Log("JE PASSE ICI YELLOW AVEC CA : " + currentTileIndex + " fejejofj " + moveValue + " ENCORE LA : " + yellowOutZone.index);
             if (GameController.gameController.CanMoveOut() && (currentTileIndex + moveValue == yellowOutZone.index)) {
-                Debug.Log("JE PASSE ICI MOVE OUT YELLOW ");
                 yellowOutZone.CanSelect(true);
                 return;
             }
             if (GameController.gameController.CanMoveOut() && currentTileIndex + moveValue > nbTiles && GameController.gameController.IsPieceOnHigherTile(tileList, this)) {
-                Debug.Log("JE PASSE ICI MOVE OUT YELLOW 2");
                 yellowOutZone.CanSelect(true);
                 return;
             }
@@ -98,14 +95,11 @@ public class Piece : MonoBehaviour
             HighlightTileMovePossible(tile, ColorState.YELLOW);
         } else {
             var redOutZone = GameController.gameController.redOutZone.GetComponent<OutZone>();
-            Debug.Log("JE PASSE ICI RED AVEC CA : " + currentTileIndex + " fejejofj " + moveValue  + " ENCORE LA : " + redOutZone.index);
             if (GameController.gameController.CanMoveOut() && (currentTileIndex - moveValue == redOutZone.index)) {
-                Debug.Log("JE PASSE ICI MOVE OUT RED ");
                 redOutZone.CanSelect(true);
                 return;
             }
             if (GameController.gameController.CanMoveOut() && currentTileIndex - moveValue < 1 && GameController.gameController.IsPieceOnHigherTile(tileList, this)) {
-                Debug.Log("JE PASSE ICI MOVE OUT RED 2");
                 redOutZone.CanSelect(true);
                 return;
             }
